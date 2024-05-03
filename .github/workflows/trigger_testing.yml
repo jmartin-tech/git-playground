@@ -1,7 +1,7 @@
 name: "Trigger Testing"
 on:
-  pull_request_target:
-    types: [labeled]
+  issue_comment:
+    types: [created]
 
 jobs:
   run-things:
