@@ -1,0 +1,11 @@
+name: "Trigger Testing"
+on:
+  pull_request_target:
+    types: [labeled]
+
+jobs:
+  run-things:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "event name is:" ${{ github.event_name }} 
+      - run: echo "event type is:" ${{ github.event.action }} 
