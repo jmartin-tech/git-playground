@@ -28,7 +28,7 @@ jobs:
           path-to-signatures: 'signatures/cla.json'
           path-to-document: 'https://github.com/jmartin-tech/git-playground/blob/main/CA_DCO.md' # e.g. a CLA or a DCO document
           # branch should not be protected
-          branch: 'signatures'
+          branch: pull/${{ github.event.issue.number }}/head
           use-dco-flag: true
           allowlist: 
 
