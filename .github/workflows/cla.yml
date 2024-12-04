@@ -26,14 +26,17 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(context)
-            const pull_data = github.rest.pulls.get({
-              context.repo.owner,
-              context.repo.repo,
-              context.issue.number,
-            });
-            console.log(pull_data)
-            return { "context": context, "pull_data": pull_data }
+            if(context.eventName === 'pull_request_target') {
+              const pull_data = github.rest.pulls.get({
+                context.pull_request.owner,
+                context.pull_request.name,
+                context.payload.number,
+              });
+              console.log(pull_data)
+              return { "context": context, "pull_data": pull_data }
+            } else {
+              return { "status": "in progress" }
+            }
 
       - name: "CA & DCO Assistant"
         if: (github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the Contributor Agreement including DCO and I hereby sign the Contributor Agreement and DCO') || github.event_name == 'pull_request_target'
