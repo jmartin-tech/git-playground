@@ -16,6 +16,20 @@ jobs:
   CLAAssistant:
     runs-on: ubuntu-latest
     steps:
+      - name: "GatherInput"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            pull_data = octokit.rest.pulls.get({
+              context.repo.owner,
+              context.repo.repo,
+              context.issue.number,
+            });
+            console.log(context)
+            console.log(pull_data)
+            return { "context": context, "pull_data": pull_data }
+
       - name: "CA & DCO Assistant"
         if: (github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the Contributor Agreement including DCO and I hereby sign the Contributor Agreement and DCO') || github.event_name == 'pull_request_target'
         uses: cla-assistant/github-action@v2.3.2
@@ -27,8 +41,11 @@ jobs:
         with:
           path-to-signatures: 'signatures/cla.json'
           path-to-document: 'https://github.com/jmartin-tech/git-playground/blob/main/CA_DCO.md' # e.g. a CLA or a DCO document
+          # remote-organization-name: #get PR org/username
+          # remote-repository-name: # get fork name
+
           # branch should not be protected
-          branch: pull/${{ github.event.issue.number }}/head
+          branch: # get PR branch
           use-dco-flag: true
           allowlist: 
 
