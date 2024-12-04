@@ -21,7 +21,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            pull_data = octokit.rest.pulls.get({
+            const pull_data = github.rest.pulls.get({
               context.repo.owner,
               context.repo.repo,
               context.issue.number,
