@@ -16,7 +16,7 @@ jobs:
   CLAAssistant:
     runs-on: ubuntu-latest
     steps:
-      - name: "GatherInput"
+      - id: "gatherInput"
         uses: actions/github-script@v7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
@@ -41,11 +41,11 @@ jobs:
         with:
           path-to-signatures: 'signatures/cla.json'
           path-to-document: 'https://github.com/jmartin-tech/git-playground/blob/main/CA_DCO.md' # e.g. a CLA or a DCO document
-          # remote-organization-name: #get PR org/username
-          # remote-repository-name: # get fork name
+          remote-organization-name: ${{steps.gatherInput.outputs.result.pull_data.repo.owner.login}}
+          remote-repository-name: ${{steps.gatherInput.outputs.result.pull_data.repo.name}}
 
           # branch should not be protected
-          branch: # get PR branch
+          branch: ${{steps.gatherInput.outputs.result.pull_data.head.ref}} # get PR branch
           use-dco-flag: true
           allowlist: 
 
