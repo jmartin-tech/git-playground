@@ -26,18 +26,11 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            if(context.eventName === 'pull_request_target') {
-              const pull_data = github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.issue.number,
-              });
-              console.log(pull_data)
-              return { "context": context, "pull_data": pull_data }
-            } else {
-              return { "status": "in progress" }
-            }
-
+            await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            })
       - name: "CA & DCO Assistant"
         if: (github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the Contributor Agreement including DCO and I hereby sign the Contributor Agreement and DCO') || github.event_name == 'pull_request_target'
         uses: cla-assistant/github-action@v2.3.2
@@ -49,11 +42,11 @@ jobs:
         with:
           path-to-signatures: 'signatures/cla.json'
           path-to-document: 'https://github.com/jmartin-tech/git-playground/blob/main/CA_DCO.md' # e.g. a CLA or a DCO document
-          remote-organization-name: ${{steps.gatherInput.outputs.result.pull_data.repo.owner.login}}
-          remote-repository-name: ${{steps.gatherInput.outputs.result.pull_data.repo.name}}
+          remote-organization-name: ${{steps.gatherInput.outputs.result.repo.owner.login}}
+          remote-repository-name: ${{steps.gatherInput.outputs.result.repo.name}}
 
           # branch should not be protected
-          branch: ${{steps.gatherInput.outputs.result.pull_data.head.ref}} # get PR branch
+          branch: ${{steps.gatherInput.outputs.result.head.ref}} # get PR branch
           use-dco-flag: true
           allowlist: 
 
