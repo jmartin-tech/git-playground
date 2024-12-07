@@ -28,8 +28,8 @@ jobs:
           script: |
             if(context.eventName === 'pull_request_target') {
               const pull_data = github.rest.pulls.get({
-                owner: context.pull_request.owner,
-                repo: context.pull_request.name,
+                owner: context.payload.pull_request.owner,
+                repo: context.payload.pull_request.name,
                 pull_number: context.payload.number,
               });
               console.log(pull_data)
