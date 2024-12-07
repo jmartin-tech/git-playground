@@ -47,10 +47,10 @@ jobs:
           path-to-signatures: 'signatures/cla.json'
           path-to-document: 'https://github.com/jmartin-tech/git-playground/blob/main/CA_DCO.md' # e.g. a CLA or a DCO document
           remote-organization-name: ${{steps.gatherInput.outputs.ORG_NAME}}
-          remote-repository-name: ${{steps.gatherInput.outputs.result.REPO_NAME}}
+          remote-repository-name: ${{steps.gatherInput.outputs.REPO_NAME}}
 
           # branch should not be protected
-          branch: ${{steps.gatherInput.outputs.result.BRANCH_NAME}} # get PR branch
+          branch: ${{steps.gatherInput.outputs.BRANCH_NAME}} # get PR branch
           use-dco-flag: true
           allowlist: 
 
